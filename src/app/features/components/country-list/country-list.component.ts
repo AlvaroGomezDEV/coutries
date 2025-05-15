@@ -6,6 +6,7 @@ import { Country } from '../../../core/models/country.model';
 import { JsonPipe } from '@angular/common';
 import { CountryCardComponent } from '../country-card/country-card.component';
 import { filter, Subscription, throttleTime } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-country-list',
@@ -16,6 +17,8 @@ import { filter, Subscription, throttleTime } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountryListComponent implements AfterViewInit, OnDestroy {
+
+  private readonly router = inject(Router)
 
   private readonly countryService = inject(CountryService);
 
@@ -98,6 +101,10 @@ export class CountryListComponent implements AfterViewInit, OnDestroy {
   private checkIfHasMore() {
     const lastLoadCount = this.countries().length % this.pageSize;
     this.hasMore = lastLoadCount === 0 &&  this.countries().length === (this.currentPage - 1) * this.pageSize;
+  }
+
+  viewCountryDetail(code: string) {
+    this.router.navigate(['/country', code]);
   }
 
   ngOnDestroy() {

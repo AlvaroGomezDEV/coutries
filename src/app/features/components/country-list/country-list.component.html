@@ -8,6 +8,7 @@
           <div class="country-card">
             <app-country-card
               [country]="country"
+              (click)="viewCountryDetail(country.cca3)"
             ></app-country-card>
           </div>
           }

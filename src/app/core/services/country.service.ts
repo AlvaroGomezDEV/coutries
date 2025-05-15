@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
 import { Country } from '../models/country.model'
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +34,15 @@ export class CountryService {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
     return this.allCountries.slice(start, end);
+  }
+
+  getCountryByCode(code: string): Observable<Country> {
+    return this.http.get<Country[]>(`${this.apiUrl}/alpha/${code}`).pipe(
+      map(response => response[0]),
+      catchError(error => {
+        console.error('Error fetching country:', error);
+        throw error;
+      })
+    );
   }
 }
