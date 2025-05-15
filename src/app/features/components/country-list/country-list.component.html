@@ -3,27 +3,29 @@
     <p>cargando.......</p>
   } @else {
     <cdk-virtual-scroll-viewport itemSize="300" class="country-viewport">
-      <div class="country-card">
+      <div class="grid-container">
         @for(country of countries(); track country.ccn3) {
-          <app-country-card
-            [country]="country"
-          ></app-country-card>
-        }
-          <!-- (toggleFavorite)="onToggleFavorite($event)" -->
-        
-        <!-- <div *ngIf="loading()" class="loading-spinner">
-          <mat-spinner diameter="40"></mat-spinner>
-        </div> -->
-    
-        @if(isLoading() && countries().length > 0) {
-          <div class="loading-more">Loading more countries...</div>
-        }
-        
-        @if(!hasMore && !isLoading()) {
-          <div class="no-more">
-            ¡Has visto todos los países!
+          <div class="country-card">
+            <app-country-card
+              [country]="country"
+            ></app-country-card>
           </div>
-        }
+          }
+            <!-- (toggleFavorite)="onToggleFavorite($event)" -->
+          
+          <!-- <div *ngIf="loading()" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div> -->
+      
+          @if(isLoading() && countries().length > 0) {
+            <div class="loading-more">Loading more countries...</div>
+          }
+          
+          @if(!hasMore && !isLoading()) {
+            <div class="no-more">
+              ¡Has visto todos los países!
+            </div>
+          }
       </div>
     </cdk-virtual-scroll-viewport>
   }
