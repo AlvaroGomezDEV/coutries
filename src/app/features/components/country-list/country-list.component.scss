@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.country-viewport {
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  width: 100%;
+}
