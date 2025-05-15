@@ -51,10 +51,10 @@ export interface Country {
     };
   };
   flag?: string;
-  flags?: {
+  flags: {
     png: string;
     svg: string;
-    alt?: string;
+    alt: string;
   };
   maps?: {
     googleMaps: string;

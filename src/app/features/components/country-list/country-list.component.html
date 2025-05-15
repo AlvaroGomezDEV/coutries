@@ -1,3 +1,7 @@
-@for(country of countries(); track country.cca3) {
-  <pre>{{ country | json }}</pre>
+@if(isLoading()) {
+  <p>cargando.......</p>
+} @else {
+  @for(country of countries(); track country) {
+    <app-country-card [country]="country"></app-country-card>
+  }
 }
