@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { catchError, of, switchMap } from 'rxjs';
@@ -21,12 +21,12 @@ import { FormatNumberPipe } from '../../../core/pipes/format-number.pipe';
 export class CountryDetailComponent implements OnInit {
 
   private readonly router = inject(Router);
+  
+  private readonly countryService = inject(CountryService);
+  
+  protected code = input.required<string>();
 
-  private readonly route = inject(ActivatedRoute);
-
-  private countryService = inject(CountryService);
-
-  protected readonly favoritesStore = inject(FavoritesStore)
+  protected readonly favoritesStore = inject(FavoritesStore);
 
   protected country = signal<Country | null>(null);
 
@@ -39,21 +39,17 @@ export class CountryDetailComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const code = params.get('code');
+    if(!this.code()) {
+      this.router.navigate(['/']);
+      return;
+    }
 
-        if(!code) {
-          this.router.navigate(['/']);
-          return of(null)
-        }
-
-        return this.countryService.getCountryByCode(code).pipe(
-          catchError((err) => {
-            console.log("Error getting country: ", err)
-            return of(null)
-          })
-        )
+    this.countryService.getCountryByCode(this.code()).pipe(
+      catchError((err) => {
+        console.log("Error getting country: ", err)
+        this.error.set('Error getting country');
+        this.isLoading.set(false);
+        return of(null)
       })
     ).subscribe({
       next: (country) => {
@@ -63,7 +59,7 @@ export class CountryDetailComponent implements OnInit {
 
         this.isLoading.set(false)
       }
-    })
+    });
   }
 
   goBack(): void {

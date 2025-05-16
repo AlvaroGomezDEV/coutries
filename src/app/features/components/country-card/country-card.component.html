@@ -6,8 +6,8 @@
 >
   <div class="overlay">
     <h3>{{ country().name.common }}</h3>
-    <p>Capital: {{ country().capital?.[0] || 'N/A' }}</p>
-    <p>Población: {{ country().population ?? 0 | formatNumber }}</p>
+    <p class="text-capital">Capital: {{ country().capital?.[0] || 'N/A' }}</p>
+    <p class="text-population">Población: {{ country().population ?? 0 | formatNumber }}</p>
 
     @if(isFavorite()) {
       <mat-icon class="favorited" aria-label="favorito">favorite</mat-icon>

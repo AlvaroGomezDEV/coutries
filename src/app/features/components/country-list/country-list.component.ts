@@ -45,17 +45,17 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
 
   private searchSubject = new Subject<string>();
 
-  protected countries = signal<Country[]>([]);
+  countries = signal<Country[]>([]);
 
-  protected isLoading = signal(false);
+  isLoading = signal(false);
 
-  protected hasMore = true;
+  hasMore = true;
 
-  protected searchTerm = '';
+  searchTerm = '';
 
-  protected selectedRegion = '';
+  selectedRegion = '';
 
-  protected regions = [
+  regions = [
     {
       value: "Africa", viewValue: "Africa"
     },

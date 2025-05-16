@@ -1,10 +1,17 @@
 import { Routes } from '@angular/router';
+import { CountryDetailComponent } from './features/components/country-detail/country-detail.component';
+import { CountryListComponent } from './features/components/country-list/country-list.component';
 
 export const routes: Routes = [
   {
-    path: '', loadComponent: () => import('./features/components/country-list/country-list.component').then((m) => m.CountryListComponent)
+    path: 'countries',
+    component: CountryListComponent
   },
   {
-    path: 'country/:code', loadComponent: () => import('./features/components/country-detail/country-detail.component').then((m) => m.CountryDetailComponent)
+    path: '', redirectTo: 'countries', pathMatch: 'full'
+  },
+  {
+    path: 'country/:code',
+    component: CountryDetailComponent
   }
 ];
