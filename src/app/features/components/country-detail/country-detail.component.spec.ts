@@ -152,15 +152,4 @@ describe('CountryDetailComponent', () => {
     expect(component['isFavorite']()).toBeFalse();
     expect(mockFavoritesStore.isFavorite).toHaveBeenCalledWith('');
   });
-
-  // it('should redirect when no code is provided', () => {
-  //   fixture.componentRef.setInput('code', null);
-
-  //   mockActivatedRoute.paramMap = of({
-  //     get: (key: string) => null
-  //   });
-    
-  //   component.ngOnInit();
-  //   expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
-  // });
 });
