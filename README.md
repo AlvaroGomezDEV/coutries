@@ -1,59 +1,103 @@
 # Countries
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
+Proyecto Angular para la visualización y gestión de información de países.
 
-## Development server
+## Instalación
 
-To start a local development server, run:
+1. **Clona el repositorio**
+   ```bash
+   git clone https://github.com/tu-usuario/countries.git
+   cd countries
+   ```
 
-```bash
-ng serve
-```
+2. **Instala las dependencias**
+   ```bash
+   npm install
+   ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+3. **Configuración adicional**
+   - Asegúrate de tener Node.js v20+ y npm instalados.
+   - Para desarrollo SSR, revisa la configuración de Express en [`src/server.ts`](src/server.ts).
 
-## Code scaffolding
+## Comandos principales
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Desarrollo**
+  ```bash
+  ng serve
+  ```
+  Accede a [http://localhost:4200](http://localhost:4200)
 
-```bash
-ng generate component component-name
-```
+- **Build producción**
+  ```bash
+  ng build --configuration=production
+  ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Tests unitarios**
+  ```bash
+  ng test
+  ```
 
-```bash
-ng generate --help
-```
+- **Cobertura de tests**
+  ```bash
+  ng test --code-coverage
+  ```
 
-## Building
+- **Lint**
+  ```bash
+  ng lint
+  ```
 
-To build the project run:
+- **SSR (Server Side Rendering)**
+  ```bash
+  npm run build
+  npm run serve:ssr:countries
+  ```
 
-```bash
-ng build
-```
+- **E2E (Cypress)**
+  ```bash
+  npx cypress open
+  ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## CI/CD
 
-## Running unit tests
+El proyecto incluye un workflow de GitHub Actions en [`.github/workflows/ci.yml`](.github/workflows/ci.yml) que ejecuta:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Lint (`npm run lint`)
+- Tests unitarios con cobertura (`npm run test -- --watch=false --code-coverage`)
+- Build de producción (`npm run build -- --configuration=production`)
+- Publicación del reporte de cobertura como artefacto
 
-```bash
-ng test
-```
+Puedes ver el estado y logs de CI/CD en la pestaña "Actions" de tu repositorio en GitHub.
 
-## Running end-to-end tests
+## Decisiones arquitectónicas
 
-For end-to-end (e2e) testing, run:
+- **Angular Standalone Components:** Se utilizan componentes standalone para mayor modularidad y carga eficiente.
+- **SSR (Server Side Rendering):** Implementado con Express y Angular Universal para mejorar SEO y tiempos de carga.
+- **Gestión de estado:** Se emplean stores reactivos personalizados (por ejemplo, [`FavoritesStore`](src/app/core/store/favorites.store.ts)).
+- **Pruebas:**  
+  - Unitarias con Jasmine/Karma.
+  - E2E con Cypress.
+  - Cobertura mínima recomendada: 80%.
+- **Estilo:**  
+  - Angular Material para UI.
+  - SCSS como preprocesador de estilos.
+- **Linting:**  
+  - Configuración estricta con angular-eslint.
+- **Internacionalización:**  
+  - Preparado para i18n mediante Angular.
 
-```bash
-ng e2e
-```
+## Estructura de carpetas
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- `src/app/` - Código fuente principal de la aplicación.
+- `src/server.ts` - Entrada SSR con Express.
+- `cypress/` - Tests end-to-end.
+- `.github/workflows/` - Configuración de CI/CD.
+- `coverage/` - Reportes de cobertura de tests.
 
-## Additional Resources
+## Recursos adicionales
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli)
+- [Angular Material](https://material.angular.io/)
+- [Cypress Documentation](https://docs.cypress.io/)
+
+---
