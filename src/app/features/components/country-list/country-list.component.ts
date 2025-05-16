@@ -8,6 +8,10 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { filter, Subscription, throttleTime } from 'rxjs';
 
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
 import { CountryService } from '../../../core/services/country.service'
 import { Country } from '../../../core/models/country.model';
 import { CountryCardComponent } from '../country-card/country-card.component';
@@ -15,7 +19,7 @@ import { FavoritesStore } from '../../../core/store/favorites.store';
 
 @Component({
   selector: 'app-country-list',
-  imports: [CountryCardComponent, ScrollingModule, FormsModule],
+  imports: [CountryCardComponent, ScrollingModule, FormsModule, MatInputModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss',
   providers: [CountryService],
@@ -39,16 +43,37 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
   
   private currentPage = 1;
 
+  private searchSubject = new Subject<string>();
+
   protected countries = signal<Country[]>([]);
 
   protected isLoading = signal(false);
 
   protected hasMore = true;
 
-  searchTerm = '';
-  selectedRegion = '';
-  regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
-  private searchSubject = new Subject<string>();
+  protected searchTerm = '';
+
+  protected selectedRegion = '';
+
+  protected regions = [
+    {
+      value: "Africa", viewValue: "Africa"
+    },
+    {
+      value: "Americas", viewValue: "America"
+    },
+    {
+      value: "Asia", viewValue: "Asia"
+    },
+    {
+      value: "Europe", viewValue: "Europa"
+    },
+    {
+      value: "Oceania", viewValue: "Oceania"
+    }
+  ];
+
+  protected searchHasResults = signal(false);
 
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
   private scrollSubscription?: Subscription;
@@ -199,7 +224,7 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
     this.searchSubject.next(term);
   }
 
-  onRegionChange(region: string) {
+  onRegionChange(): void {
     this.applyFilters();
   }
 
@@ -212,17 +237,27 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
     this.countryService.getAllCountries(1, 250).subscribe({
       next: (allCountries) => {
         let filtered = allCountries;
+
         if (this.selectedRegion) {
           filtered = filtered.filter(c => c.region === this.selectedRegion);
         }
+
         if (this.searchTerm.length >= 3) {
           const term = this.searchTerm.toLowerCase();
           filtered = filtered.filter(c => c.name.common.toLowerCase().includes(term));
+          
+          if(filtered.length > 0) {
+            this.searchHasResults.set(true);
+          } else {
+            this.searchHasResults.set(false);
+          }
         }
+
         this.countries.set(filtered.slice(0, this.pageSize));
         this.currentPage = 2;
         this.isLoading.set(false);
         this.checkIfHasMore();
+
         if (this.viewport) {
           this.viewport.scrollToIndex(0);
           this.viewport.checkViewportSize();

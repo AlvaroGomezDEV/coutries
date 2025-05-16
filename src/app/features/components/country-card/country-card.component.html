@@ -8,6 +8,8 @@
       <p>Población: {{ country().population ?? 0 | number }}</p>
     </div>
 
-    <span [class.favorited]="isFavorite()" >♥</span>
+    @if(isFavorite()) {
+      <span>♥</span>
+    }
   }
 </article>

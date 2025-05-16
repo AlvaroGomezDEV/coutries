@@ -3,23 +3,28 @@
     <p>cargando.......</p>
   } @else {
     <div class="country-controls">
-      <input
-      type="text"
-      placeholder="Buscar país..."
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="onSearchChange($event)"
-      />
-      <select #regionSelect [(ngModel)]="selectedRegion" (change)="onRegionChange(regionSelect.value)">
-        <option value="">Todas las regiones</option>
-        @for(region of regions; track region) {
-          <option [value]="region">{{ region }}</option>
-        }
-      </select>
+      <mat-form-field>
+        <mat-label>Buscar país</mat-label>
+        <input
+          matInput
+          placeholder="Escribe el país"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange($event)">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Regiones</mat-label>
+        <mat-select [(ngModel)]="selectedRegion" (selectionChange)="onRegionChange()">
+          <mat-option>Todas las regiones</mat-option>
+          @for (region of regions; track region) {
+            <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
     </div>
     <div>
       <cdk-virtual-scroll-viewport itemSize="300" #viewport class="country-viewport">
         <div class="grid-container">
-          @for(country of countries(); track country.ccn3; let i = $index) {
+          @for(country of countries(); track country.cca3; let i = $index) {
             <div class="country-card">
               <app-country-card
                 [tabindex]="i + 1"
@@ -39,7 +44,11 @@
         
         @if(!hasMore && !isLoading()) {
           <div class="no-more">
-            <span>¡Has visto todos los países disponibles!</span>
+            @if(searchTerm.length > 0 && !searchHasResults()) {
+              <span>No se encontraron países que coincidan con tu busqueda</span>
+            } @else if(searchTerm.length === 0 ) {
+              <span>¡Has visto todos los países disponibles!</span>
+            }
           </div>
         }
       </cdk-virtual-scroll-viewport>

@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+@use './variables' as *;
+
+:root {
+  @include mat.select-overrides((
+    panel-background-color: white,
+    enabled-trigger-text-color: $davys-gray,
+  ));
+}
