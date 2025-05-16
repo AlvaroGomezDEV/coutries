@@ -27,7 +27,7 @@ jobs:
         run: npm run lint
 
       - name: Coverage tests (ChromeHeadless)
-        run: npm run test -- --watch=false --code-coverage --browsers=ChromeHeadlessCI
+        run: npm run test -- --watch=false --code-coverage
         env:
           CHROME_BIN: /usr/bin/google-chrome
 
