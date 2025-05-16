@@ -1,28 +1,48 @@
-<div class="country-viewport">
+<div class="content-all">
   @if(isLoading() && countries().length === 0) {
     <p>cargando.......</p>
   } @else {
-    <cdk-virtual-scroll-viewport itemSize="300" #viewport class="country-viewport">
-      <div class="grid-container">
-        @for(country of countries(); track country.ccn3) {
-          <div class="country-card">
-            <app-country-card
-              [country]="country"
-              (click)="viewCountryDetail(country.cca3)"
-            ></app-country-card>
-          </div>
-          }
-      
-          @if(isLoading() && countries().length > 0) {
-            <div class="loading-more">Loading more countries...</div>
-          }
-          
-          @if(!hasMore && !isLoading()) {
-            <div class="no-more">
-              ¡Has visto todos los países!
+    <div class="country-controls">
+      <input
+      type="text"
+      placeholder="Buscar país..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange($event)"
+      />
+      <select #regionSelect [(ngModel)]="selectedRegion" (change)="onRegionChange(regionSelect.value)">
+        <option value="">Todas las regiones</option>
+        @for(region of regions; track region) {
+          <option [value]="region">{{ region }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <cdk-virtual-scroll-viewport itemSize="300" #viewport class="country-viewport">
+        <div class="grid-container">
+          @for(country of countries(); track country.ccn3; let i = $index) {
+            <div class="country-card">
+              <app-country-card
+                [tabindex]="i + 1"
+                [country]="country"
+                (keydown.enter)="viewCountryDetail(country.cca3)"
+                (keydown.space)="viewCountryDetail(country.cca3)"
+                (click)="viewCountryDetail(country.cca3)"
+              ></app-country-card>
             </div>
-          }
-      </div>
-    </cdk-virtual-scroll-viewport>
-  }
+            }
+        </div>
+        @if(isLoading() && countries().length > 0) {
+          <div class="loading-more">
+            <span>Cargando más países</span>
+          </div>
+        }
+        
+        @if(!hasMore && !isLoading()) {
+          <div class="no-more">
+            <span>¡Has visto todos los países disponibles!</span>
+          </div>
+        }
+      </cdk-virtual-scroll-viewport>
+    </div>
+    }
 </div>

@@ -1,22 +1,48 @@
-:host {
+.content-all {
+  box-sizing: border-box;
   display: block;
   height: 100%;
-}
-
-.country-viewport {
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-  width: 100%;
-
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    padding: 16px;
+  padding: 70px 0 0;
+  position: relative;
+  
+  .country-controls {
+    justify-content: space-between;
+    display: flex;
+    margin: 0 auto;
+    max-width: 90%;
   }
+  
+  .country-viewport {
+    box-sizing: border-box;
+    height: calc(100vh - 91px);
+    overflow-y: auto;
+    width: 100%;
+    
+    .country-card {
+      cursor: pointer;
+    }
 
-  .country-card {
-    display: grid;
-    gap: 2rem
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 0 auto;
+      max-width: 80%;
+      padding: 16px;
+    }
+
+    .loading-more, .no-more {
+      clear: both;
+      padding: 1.5rem 0;
+      width: 100%;
+
+      span {
+        display: block;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 100%;
+      }
+    }
   }
 }

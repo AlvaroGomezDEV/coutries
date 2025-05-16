@@ -1,17 +1,21 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnDestroy, signal, ViewChild } from '@angular/core';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { NavigationEnd, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { filter, Subscription, throttleTime } from 'rxjs';
 
 import { CountryService } from '../../../core/services/country.service'
 import { Country } from '../../../core/models/country.model';
 import { CountryCardComponent } from '../country-card/country-card.component';
-import { filter, Subscription, throttleTime } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
 import { FavoritesStore } from '../../../core/store/favorites.store';
 
 @Component({
   selector: 'app-country-list',
-  imports: [CountryCardComponent, ScrollingModule],
+  imports: [CountryCardComponent, ScrollingModule, FormsModule],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss',
   providers: [CountryService],
@@ -41,8 +45,23 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
 
   protected hasMore = true;
 
+  searchTerm = '';
+  selectedRegion = '';
+  regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+  private searchSubject = new Subject<string>();
+
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
   private scrollSubscription?: Subscription;
+
+  constructor() {
+    this.searchSubject.pipe(
+      debounceTime(300)
+    ).subscribe(term => {
+      if (term.length >= 3 || term.length === 0) {
+        this.applyFilters();
+      }
+    });
+  }
 
   ngAfterViewInit() {
     this.setupNavigationListener();
@@ -174,6 +193,44 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
 
   toggleFavorite(country: Country): void {
     this.favoritesStore.toggleFavorite(country);
+  }
+
+  onSearchChange(term: string) {
+    this.searchSubject.next(term);
+  }
+
+  onRegionChange(region: string) {
+    this.applyFilters();
+  }
+
+  private applyFilters() {
+    this.currentPage = 1;
+    this.hasMore = true;
+    this.countries.set([]);
+    this.isLoading.set(true);
+
+    this.countryService.getAllCountries(1, 250).subscribe({
+      next: (allCountries) => {
+        let filtered = allCountries;
+        if (this.selectedRegion) {
+          filtered = filtered.filter(c => c.region === this.selectedRegion);
+        }
+        if (this.searchTerm.length >= 3) {
+          const term = this.searchTerm.toLowerCase();
+          filtered = filtered.filter(c => c.name.common.toLowerCase().includes(term));
+        }
+        this.countries.set(filtered.slice(0, this.pageSize));
+        this.currentPage = 2;
+        this.isLoading.set(false);
+        this.checkIfHasMore();
+        if (this.viewport) {
+          this.viewport.scrollToIndex(0);
+          this.viewport.checkViewportSize();
+          this.cdr.detectChanges();
+        }
+      },
+      error: () => this.isLoading.set(false)
+    });
   }
 
   ngOnDestroy() {

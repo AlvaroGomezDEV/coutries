@@ -1,0 +1,16 @@
+@use './variables' as *;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: $lavender-blush;
+  height: 100%;
+}
+
+body {
+  color: $davys-gray;
+  margin: 0;
+}
