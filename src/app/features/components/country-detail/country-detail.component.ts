@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
-import { catchError, of, switchMap } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';

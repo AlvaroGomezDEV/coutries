@@ -6,11 +6,13 @@ import { NavigationEnd, Router } from '@angular/router';
 import { CountryService } from '../../../core/services/country.service';
 import { FavoritesStore } from '../../../core/store/favorites.store';
 import { Country } from '../../../core/models/country.model';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Event } from '@angular/router';
 
 describe('CountryListComponent', () => {
   let component: CountryListComponent;
@@ -18,7 +20,6 @@ describe('CountryListComponent', () => {
   let mockCountryService: jasmine.SpyObj<CountryService>;
   let mockFavoritesStore: jasmine.SpyObj<FavoritesStore>;
   let mockRouter: jasmine.SpyObj<Router>;
-  let eventsSubject: Subject<any>;
 
   const mockCountries: Country[] = [
     {
@@ -66,8 +67,6 @@ describe('CountryListComponent', () => {
   ];
 
   beforeEach(async () => {
-    eventsSubject = new Subject();
-
     mockCountryService = jasmine.createSpyObj('CountryService', ['getAllCountries']);
     mockFavoritesStore = jasmine.createSpyObj('FavoritesStore', ['toggleFavorite']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate'], { events: of() });
@@ -80,7 +79,9 @@ describe('CountryListComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        CdkVirtualScrollViewport,
+        Event
       ],
       providers: [
         { provide: CountryService, useValue: mockCountryService },
@@ -99,8 +100,10 @@ describe('CountryListComponent', () => {
   });
 
   it('should initialize component on ngAfterViewInit', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     spyOn(component as any, 'initializeComponent');
     component.ngAfterViewInit();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).initializeComponent).toHaveBeenCalled();
   });
 
@@ -117,9 +120,10 @@ describe('CountryListComponent', () => {
   it('should setup scroll listener in ngAfterViewChecked when not active', () => {
     component['viewport'] = {
       elementScrolled: () => of()
-    } as any;
+    } as unknown as CdkVirtualScrollViewport;
     component['scrollListenerActive'] = false;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const setupScrollSpy = spyOn<any>(component, 'setupScrollListener');
 
     component.ngAfterViewChecked();
@@ -155,9 +159,10 @@ describe('CountryListComponent', () => {
       getViewportSize: () => 500,
       getDataLength: () => 1000,
       measureScrollOffset: () => 400
-    } as any;
+    } as unknown as CdkVirtualScrollViewport;
 
     component.isLoading.set(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).shouldLoadMore()).toBeFalse();
   });
 
@@ -166,10 +171,11 @@ describe('CountryListComponent', () => {
       getViewportSize: () => 500,
       getDataLength: () => 1000,
       measureScrollOffset: () => 400
-    } as any;
+    } as unknown as CdkVirtualScrollViewport;
 
     component.isLoading.set(false);
     component['hasMore'] = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).shouldLoadMore()).toBeFalse();
   });
 
@@ -178,10 +184,11 @@ describe('CountryListComponent', () => {
       getViewportSize: () => 300,
       getDataLength: () => 1000,
       measureScrollOffset: () => 691
-    } as any;
+    } as unknown as CdkVirtualScrollViewport;
 
     component.isLoading.set(false);
     component['hasMore'] = true;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).shouldLoadMore()).toBeTrue();
   });
 
@@ -190,10 +197,11 @@ describe('CountryListComponent', () => {
       getViewportSize: () => 300,
       getDataLength: () => 1000,
       measureScrollOffset: () => 690
-    } as any;
+    } as unknown as CdkVirtualScrollViewport;
 
     component.isLoading.set(false);
     component['hasMore'] = true;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).shouldLoadMore()).toBeFalse();
   });
 
@@ -211,9 +219,13 @@ describe('CountryListComponent', () => {
 
   it('should apply filters by search term', fakeAsync(() => {
     component['viewport'] = {
-      scrollToIndex: () => {},
-      checkViewportSize: () => {}
-    } as any;
+      scrollToIndex: () => {
+        /** mock */
+      },
+      checkViewportSize: () => {
+        /** mock */
+      }
+    } as unknown as CdkVirtualScrollViewport;
 
     component.searchTerm = 'test';
     component.selectedRegion = '';
@@ -243,12 +255,14 @@ describe('CountryListComponent', () => {
   }));
 
   it('should apply filters on region change', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const applyFiltersSpy = spyOn<any>(component, 'applyFilters');
     component.onRegionChange();
     expect(applyFiltersSpy).toHaveBeenCalled();
   });
 
   it('should call applyFilters when search term is empty', fakeAsync(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const applyFiltersSpy = spyOn<any>(component, 'applyFilters');
 
     component.onSearchChange('');
@@ -271,9 +285,13 @@ describe('CountryListComponent', () => {
 
   it('should set searchHasResults to false when no country matches filter', fakeAsync(() => {
     component['viewport'] = {
-      scrollToIndex: () => {},
-      checkViewportSize: () => {}
-    } as any;
+      scrollToIndex: () => {
+        /** mock */
+      },
+      checkViewportSize: () => {
+        /** mock */
+      }
+    } as unknown as CdkVirtualScrollViewport;
 
     component.searchTerm = 'doesnotexist';
     component.selectedRegion = '';
@@ -289,6 +307,7 @@ describe('CountryListComponent', () => {
   }));
 
   it('should debounce search input and call applyFilters', fakeAsync(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     spyOn<any>(component, 'applyFilters');
     component.onSearchChange('Test');
     tick(300);
@@ -318,8 +337,10 @@ describe('CountryListComponent', () => {
     component['hasMore'] = true;
     component.isLoading.set(false);
     component['viewport'] = {
-      checkViewportSize: () => {},
-    } as any;
+      checkViewportSize: () => {
+        /** mock */
+      },
+    } as unknown as CdkVirtualScrollViewport;
 
     const newCountries = [...mockCountries];
     mockCountryService.getAllCountries.and.returnValue(of(newCountries));
@@ -348,7 +369,9 @@ describe('CountryListComponent', () => {
     const error = new Error('Failed to load');
     component['hasMore'] = true;
     component.isLoading.set(false);
-    component['viewport'] = { checkViewportSize: () => {} } as any;
+    component['viewport'] = {
+      checkViewportSize: () => { /** mock */ }
+    } as unknown as CdkVirtualScrollViewport;
 
     mockCountryService.getAllCountries.and.returnValue(throwError(() => error));
     const consoleSpy = spyOn(console, 'error');
@@ -364,9 +387,13 @@ describe('CountryListComponent', () => {
     component.selectedRegion = 'Test Region';
     component.searchTerm = '';
     component['viewport'] = {
-      scrollToIndex: () => {},
-      checkViewportSize: () => {}
-    } as any;
+      scrollToIndex: () => {
+        /** mock */
+      },
+      checkViewportSize: () => {
+        /** mock */
+      }
+    } as unknown as CdkVirtualScrollViewport;
 
     mockCountryService.getAllCountries.and.returnValue(of(mockCountries));
 
@@ -381,13 +408,16 @@ describe('CountryListComponent', () => {
 
   it('should handle navigation event in setupNavigationListener', fakeAsync(() => {
     const navigationEnd = new NavigationEnd(1, '/previous', '/current');
-    const routerEvents$ = new Subject<any>();
+    const routerEvents$ = new Subject<Event>();
 
     mockRouter = jasmine.createSpyObj('Router', ['navigate'], { events: routerEvents$.asObservable() });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).router = mockRouter;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleNavigationSpy = spyOn<any>(component, 'handleNavigation');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).setupNavigationListener();
 
     routerEvents$.next(navigationEnd);

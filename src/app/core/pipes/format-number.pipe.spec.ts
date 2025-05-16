@@ -24,7 +24,7 @@ describe('FormatNumberPipe', () => {
   });
 
   it('should return empty if the value is null', () => {
-    expect(pipe.transform(null as any)).toBe('');
+    expect(pipe.transform(undefined)).toBe('');
   });
 
   it('should return empty if the value is NaN', () => {

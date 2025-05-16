@@ -193,7 +193,7 @@ export class CountryListComponent implements AfterViewInit, AfterViewChecked, On
     });
   }
 
-  private setupScrollListener() {
+  private setupScrollListener(): void {
     this.scrollSubscription?.unsubscribe();
 
     if (this.viewport) {
