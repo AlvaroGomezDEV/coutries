@@ -1,5 +1,9 @@
 @use '../../../theme/variables' as *;
 
+:host {
+  outline: none;
+}
+
 .country {
   align-items: flex-end;
   background-position: center;

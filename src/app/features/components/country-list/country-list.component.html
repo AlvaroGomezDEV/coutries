@@ -23,9 +23,9 @@
     </div>
     <div>
       <cdk-virtual-scroll-viewport itemSize="300" #viewport class="country-viewport">
-        <div class="grid-container">
+        <div class="grid-container" role="list">
           @for(country of countries(); track country.cca3; let i = $index) {
-            <div class="country-card">
+            <div class="country-card" role="listitem">
               <app-country-card
                 [tabindex]="i + 1"
                 [country]="country"

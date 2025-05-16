@@ -1,3 +1,5 @@
+@use '../../../theme/variables' as *;
+
 .content-all {
   box-sizing: border-box;
   display: block;
@@ -17,10 +19,6 @@
     height: calc(100vh - 146px);
     overflow-y: auto;
     width: 100%;
-    
-    .country-card {
-      cursor: pointer;
-    }
 
     .grid-container {
       display: grid;
@@ -29,6 +27,18 @@
       margin: 0 auto;
       max-width: 80%;
       padding: 16px;
+
+      .country-card {
+        cursor: pointer;
+        transition: box-shadow 0.3s, transform 0.3s;
+
+        &:focus-within {
+          outline: none;
+          box-shadow: 0 0 0 4px $dodge-blue;
+          transform: scale(1.02);
+          z-index: 1;
+        }
+      }
     }
 
     .loading-more, .no-more {

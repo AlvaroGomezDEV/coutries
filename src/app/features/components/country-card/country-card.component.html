@@ -10,7 +10,7 @@
     <p>Población: {{ country().population ?? 0 | formatNumber }}</p>
 
     @if(isFavorite()) {
-      <span class="favorited" aria-label="favorito">♥</span>
+      <mat-icon class="favorited" aria-label="favorito">favorite</mat-icon>
     }
   </div>
 </article>
