@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'formatNumber'
 })
 export class FormatNumberPipe implements PipeTransform {
-  transform(value: number): string {
+  transform(value: number | undefined): string {
     if (value === null || value === undefined) return '';
 
     const valueNumber = typeof value === 'string' ? parseFloat(value) : value;

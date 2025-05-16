@@ -1,72 +1,112 @@
 <div class="country-detail-container">
-  <button class="back-button" (click)="goBack()">
-    ← Back to list
-  </button>
-
   @if (isLoading()) {
-    <div class="loading">Loading country details...</div>
+    <div class="loading">Cargando...</div>
   } @else if (error()) {
     <div class="error">{{ error() }}</div>
   } @else if (country()) {
     <div class="country-detail">
       <div class="header">
         <h1>{{ country()!.name.common }}</h1>
-        <img [src]="country()!.flags.svg" 
-             [alt]="'Flag of ' + country()!.name.common" 
-             class="flag">
+        <button
+          mat-icon-button
+          aria-label="Botón para marcar como favorito con icono de corazón"
+          (click)="toggleFavorite()"
+          role="button"
+        >
+          <mat-icon class="favorited">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
       </div>
 
-      <button (click)="toggleFavorite()" [class.favorited]="isFavorite()" >♥</button>
+      <img
+        [src]="country()!.flags.svg" 
+        [alt]="'Bandera de ' + country()!.name.common" 
+        class="flag" />
 
       <div class="details-grid">
         <div class="detail-item">
-          <h3>Official Name</h3>
-          <p>{{ country()!.name.official }}</p>
+          <mat-icon>fingerprint</mat-icon>
+          <div class="info">
+            <h3>Nombre oficial</h3>
+            <p>{{ country()!.name.official }}</p>
+          </div>
         </div>
 
         <div class="detail-item">
-          <h3>Capital</h3>
-          <p>{{ country()!.capital?.join(', ') || 'N/A' }}</p>
+          <mat-icon class="material-symbols-outlined">bookmark_star</mat-icon>
+          <div class="info">
+            <h3>Capital</h3>
+            <p>{{ country()!.capital?.join(', ') || 'N/A' }}</p>
+          </div>
         </div>
 
         <div class="detail-item">
-          <h3>Population</h3>
-          <p>{{ country()!.population | number }}</p>
+          <mat-icon>people</mat-icon>
+          <div class="info">
+            <h3>Población</h3>
+            <p>{{ country()!.population | formatNumber }}</p>
+          </div>
         </div>
 
         <div class="detail-item">
-          <h3>Region</h3>
-          <p>{{ country()!.region }}</p>
+          <mat-icon>public</mat-icon>
+          <div class="info">
+            <h3>Región</h3>
+            <p>{{ country()!.region }}</p>
+          </div>
         </div>
 
         <div class="detail-item">
-          <h3>Subregion</h3>
-          <p>{{ country()!.subregion || 'N/A' }}</p>
+          <mat-icon>explore</mat-icon>
+          <div class="info">
+            <h3>Subregión</h3>
+            <p>{{ country()!.subregion || 'N/A' }}</p>
+          </div>
         </div>
 
         <div class="detail-item">
-          <h3>Languages</h3>
-          <p>{{ getLanguages(country()!.languages) }}</p>
+          <mat-icon>translate</mat-icon>
+          <div class="info">
+            <h3>Lenguajes</h3>
+            <p>{{ getLanguages(country()!.languages) }}</p>
+          </div>
         </div>
 
         <div class="detail-item">
-          <h3>Currencies</h3>
-          <p>{{ getCurrencies(country()!.currencies) }}</p>
+          <mat-icon>payments</mat-icon>
+          <div class="info">
+            <h3>Monedas</h3>
+            <p>{{ getCurrencySymbol(country()!.currencies) }} {{ getCurrencies(country()!.currencies) }}</p>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>square_foot</mat-icon>
+          <div class="info">
+            <h3>Area</h3>
+            <p>{{ country()!.area | formatNumber }} km<sup>2</sup></p>
+          </div>
         </div>
 
         @if (country()!.borders?.length) {
           <div class="detail-item border-countries">
-            <h3>Border Countries</h3>
-            <div class="border-list">
-              @for (border of country()!.borders; track border) {
-                <a [routerLink]="['/country', border]" class="border-country">
-                  {{ border }}
-                </a>
-              }
+            <mat-icon>border_all</mat-icon>
+            <div class="info">
+              <h3>Países fronterizos</h3>
+              <div class="border-list">
+                @for (border of country()!.borders; track border) {
+                  <a [routerLink]="['/country', border]" class="border-country">
+                    {{ border }}
+                  </a>
+                }
+              </div>
             </div>
           </div>
         }
       </div>
     </div>
   }
+
+  <button class="back-button" (click)="goBack()" role="button">
+    Volver
+  </button>
 </div>

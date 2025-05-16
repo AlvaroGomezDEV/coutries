@@ -1,17 +1,21 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
+import { catchError, of, switchMap } from 'rxjs';
+
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
 import { CountryService } from '../../../core/services/country.service';
 import { Country } from '../../../core/models/country.model';
-import { catchError, of, switchMap } from 'rxjs';
-import { DecimalPipe } from '@angular/common';
 import { FavoritesStore } from '../../../core/store/favorites.store';
+import { FormatNumberPipe } from '../../../core/pipes/format-number.pipe';
 
 @Component({
   selector: 'app-country-detail',
-  imports: [RouterLink, DecimalPipe],
+  imports: [RouterLink, FormatNumberPipe, MatIcon, MatButtonModule],
   templateUrl: './country-detail.component.html',
   styleUrl: './country-detail.component.scss',
-  providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountryDetailComponent implements OnInit {
@@ -73,6 +77,11 @@ export class CountryDetailComponent implements OnInit {
   getCurrencies(currencies: Record<string, { name: string }> | undefined): string {
     if (!currencies) return 'N/A';
     return Object.values(currencies).map(c => c.name).join(', ');
+  }
+
+  getCurrencySymbol(currencies: Record<string, { symbol: string }> | undefined): string {
+    if (!currencies) return 'N/A';
+    return Object.values(currencies).map(c => c.symbol).join(', ');
   }
 
   toggleFavorite() {

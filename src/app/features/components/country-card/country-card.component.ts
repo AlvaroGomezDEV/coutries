@@ -11,7 +11,6 @@ import { FormatNumberPipe } from '../../../core/pipes/format-number.pipe';
   imports: [FormatNumberPipe, MatIconModule],
   templateUrl: './country-card.component.html',
   styleUrl: './country-card.component.scss',
-  providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountryCardComponent {
