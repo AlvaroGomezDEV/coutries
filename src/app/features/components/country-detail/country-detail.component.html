@@ -13,7 +13,7 @@
           (click)="toggleFavorite()"
           role="button"
         >
-          <mat-icon class="favorited">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+          <mat-icon mat-fab class="favorited">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
         </button>
       </div>
 
@@ -94,9 +94,7 @@
               <h3>Países fronterizos</h3>
               <div class="border-list">
                 @for (border of country()!.borders; track border) {
-                  <a [routerLink]="['/country', border]" class="border-country">
-                    {{ border }}
-                  </a>
+                  <button mat-mini-fab [routerLink]="['/country', border]">{{ border }}</button>
                 }
               </div>
             </div>
@@ -106,7 +104,7 @@
     </div>
   }
 
-  <button class="back-button" (click)="goBack()" role="button">
-    Volver
-  </button>
+  <div class="back-button-container">
+    <button mat-mini-fab class="back-button" (click)="goBack()" role="button">Volver</button>
+  </div>
 </div>
