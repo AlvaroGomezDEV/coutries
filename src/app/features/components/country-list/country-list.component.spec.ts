@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Event } from '@angular/router';
+import type { Event } from '@angular/router';
 
 describe('CountryListComponent', () => {
   let component: CountryListComponent;
