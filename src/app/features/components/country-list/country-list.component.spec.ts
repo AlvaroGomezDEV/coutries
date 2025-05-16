@@ -79,9 +79,7 @@ describe('CountryListComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        HttpClientTestingModule,
-        CdkVirtualScrollViewport,
-        Event
+        HttpClientTestingModule
       ],
       providers: [
         { provide: CountryService, useValue: mockCountryService },
