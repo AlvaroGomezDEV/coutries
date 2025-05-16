@@ -54,7 +54,7 @@ describe('CountryCardComponent', () => {
     expect(HostComponent).toBeTruthy();
   });
 
-  it('debería mostrar el nombre, capital y población del país', () => {
+  it('should show the name, capital and population of the country', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const capitalText = fixture.nativeElement.querySelector('.text-capital')
     const populationText = fixture.nativeElement.querySelector('.text-population')
@@ -64,7 +64,7 @@ describe('CountryCardComponent', () => {
     expect(populationText?.textContent.trim()).toBe("Población: 26'545.864");
   });
 
-  it('debería mostrar el icono de favorito si es favorito', () => {
+  it('should show the favorite icon if it is a favorite', () => {
     const icon = fixture.nativeElement.querySelector('.favorited');
     expect(icon?.textContent?.trim()).toBe('favorite');
   });
@@ -72,7 +72,6 @@ describe('CountryCardComponent', () => {
   it('should return false when country is undefined or cca3 is missing', () => {
     const mockStore = TestBed.inject(FavoritesStore) as jasmine.SpyObj<FavoritesStore>;
 
-    // Espiamos la función isFavorite con un dummy que devuelva una función que devuelve false
     spyOn(mockStore, 'isFavorite').and.returnValue(signal(false));
 
     const hostComponent = fixture.componentInstance;

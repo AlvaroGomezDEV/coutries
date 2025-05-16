@@ -29,7 +29,7 @@ describe('ErrorInterceptor', () => {
     httpMock.verify();
   });
 
-  it('debe mostrar "Bad Request" para error 400', () => {
+  it('should show "Bad Request" for error 400', () => {
     http.get('/test').subscribe({
       error: () => {
         expect(window.alert).toHaveBeenCalledWith('Bad Request');
@@ -40,7 +40,7 @@ describe('ErrorInterceptor', () => {
     req.flush({}, { status: 400, statusText: 'Bad Request' });
   });
 
-  it('debe mostrar "Unauthorized" y navegar a /login para error 401', () => {
+  it('should show "Unauthorized" and navigate to /login for error 401', () => {
     http.get('/test').subscribe({
       error: () => {
         expect(window.alert).toHaveBeenCalledWith('Unauthorized');
@@ -52,7 +52,7 @@ describe('ErrorInterceptor', () => {
     req.flush({}, { status: 401, statusText: 'Unauthorized' });
   });
 
-  it('debe mostrar "Resource not found" para error 404', () => {
+  it('should show "Resource not found" for 404 error', () => {
     http.get('/test').subscribe({
       error: () => {
         expect(window.alert).toHaveBeenCalledWith('Resource not found');
@@ -63,7 +63,7 @@ describe('ErrorInterceptor', () => {
     req.flush({}, { status: 404, statusText: 'Not Found' });
   });
 
-  it('debe mostrar "Internal Server Error" para error 500', () => {
+  it('should show "Internal Server Error" for error 500', () => {
     http.get('/test').subscribe({
       error: () => {
         expect(window.alert).toHaveBeenCalledWith('Internal Server Error');
@@ -74,7 +74,7 @@ describe('ErrorInterceptor', () => {
     req.flush({}, { status: 500, statusText: 'Server Error' });
   });
 
-  it('debe mostrar mensaje por defecto para otros errores', () => {
+  it('should show default message for other errors', () => {
     http.get('/test').subscribe({
       error: () => {
         expect(window.alert).toHaveBeenCalledWith('An unknown error occurred!');
@@ -85,7 +85,7 @@ describe('ErrorInterceptor', () => {
     req.flush({}, { status: 418, statusText: "I'm a teapot" });
   });
 
-  it('debe mostrar mensaje de ErrorEvent', () => {
+  it('should show ErrorEvent message', () => {
     http.get('/test').subscribe({
       error: () => {
         expect(window.alert).toHaveBeenCalledWith('Error: error event');

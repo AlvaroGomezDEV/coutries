@@ -17,7 +17,7 @@ describe('CountryService', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('debe obtener todos los países paginados', () => {
+  it('should get all the countries paged', () => {
     const mockCountries = [
       { cca3: 'ESP', name: { common: 'España' } },
       { cca3: 'FRA', name: { common: 'Francia' } },
@@ -35,7 +35,7 @@ describe('CountryService', () => {
     req.flush(mockCountries);
   });
 
-  it('debe obtener un país por código', () => {
+  it('should get a country by code', () => {
     const mockCountry = { cca3: 'ESP', name: { common: 'España' } };
 
     service.getCountryByCode('ESP').subscribe(country => {
@@ -47,7 +47,7 @@ describe('CountryService', () => {
     req.flush([mockCountry]);
   });
 
-  it('debe devolver países paginados desde caché si ya están cargados', () => {
+  it('should return paginated countries from cache if they are already loaded', () => {
     (service as any).allCountries = [
       { cca3: 'ESP', name: { common: 'España' } },
       { cca3: 'FRA', name: { common: 'Francia' } },
@@ -63,7 +63,7 @@ describe('CountryService', () => {
     httpMock.expectNone('https://restcountries.com/v3.1/all');
   });
 
-  it('debe manejar errores al obtener un país por código', () => {
+  it('should handle errors when getting a country by code', () => {
     const consoleErrorSpy = spyOn(console, 'error');
 
     service.getCountryByCode('XYZ').subscribe({

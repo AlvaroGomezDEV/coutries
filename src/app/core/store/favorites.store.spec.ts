@@ -25,25 +25,25 @@ describe('FavoritesStore', () => {
     store = new FavoritesStore();
   });
 
-  it('debe iniciar sin favoritos', () => {
+  it('should start without favorites', () => {
     expect(store.favorites()).toEqual([]);
     expect(store.favoritesCount()).toBe(0);
   });
 
-  it('debe agregar un favorito', () => {
+  it('should add a favorite', () => {
     store.addFavorite(mockCountry);
     expect(store.favorites()).toContain(mockCountry);
     expect(store.favoritesCount()).toBe(1);
     expect(store.isFavorite('CMR')()).toBeTrue();
   });
 
-  it('no debe agregar duplicados', () => {
+  it('should not add duplicates', () => {
     store.addFavorite(mockCountry);
     store.addFavorite(mockCountry);
     expect(store.favorites().length).toBe(1);
   });
 
-  it('debe eliminar un favorito', () => {
+  it('should delete a favorite', () => {
     store.addFavorite(mockCountry);
     store.removeFavorite('CMR');
     expect(store.favorites()).not.toContain(mockCountry);
@@ -51,12 +51,12 @@ describe('FavoritesStore', () => {
     expect(store.isFavorite('CMR')()).toBeFalse();
   });
 
-  it('toggleFavorite debe agregar si no existe', () => {
+  it('toggleFavorite should be added if it does not exist', () => {
     store.toggleFavorite(mockCountry);
     expect(store.isFavorite('CMR')()).toBeTrue();
   });
 
-  it('toggleFavorite debe eliminar si ya existe', () => {
+  it('toggleFavorite should be removed if it already exists', () => {
     store.addFavorite(mockCountry);
     store.toggleFavorite(mockCountry);
     expect(store.isFavorite('CMR')()).toBeFalse();

@@ -8,15 +8,20 @@
         <input
           matInput
           placeholder="Escribe el país"
+          data-testid="search-input"
           [(ngModel)]="searchTerm"
           (ngModelChange)="onSearchChange($event)">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Regiones</mat-label>
-        <mat-select [(ngModel)]="selectedRegion" (selectionChange)="onRegionChange()">
-          <mat-option>Todas las regiones</mat-option>
+        <mat-select
+          data-testid="region-select"
+          [(ngModel)]="selectedRegion"
+          (selectionChange)="onRegionChange()"
+        >
+          <mat-option data-testid="region-option">Todas las regiones</mat-option>
           @for (region of regions; track region) {
-            <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
+            <mat-option [value]="region.value" data-testid="region-option">{{region.viewValue}}</mat-option>
           }
         </mat-select>
       </mat-form-field>

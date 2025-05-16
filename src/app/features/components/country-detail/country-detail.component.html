@@ -9,11 +9,12 @@
         <h1>{{ country()!.name.common }}</h1>
         <button
           mat-icon-button
+          data-testid="favorite-button"
           aria-label="Botón para marcar como favorito con icono de corazón"
           (click)="toggleFavorite()"
           role="button"
         >
-          <mat-icon mat-fab class="favorited">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+          <mat-icon mat-fab class="favorited" [attr.data-testid]="isFavorite() ? 'favorited' : 'not-favorited'">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
         </button>
       </div>
 

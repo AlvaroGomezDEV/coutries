@@ -7,35 +7,35 @@ describe('FormatNumberPipe', () => {
     pipe = new FormatNumberPipe();
   });
 
-  it('debe crear una instancia', () => {
+  it('should create', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('debe formatear un número entero grande', () => {
+  it('should format a large integer', () => {
     expect(pipe.transform(1234567)).toBe("1'234.567");
   });
 
-  it('debe formatear un número con decimales', () => {
+  it('should format a number with decimals', () => {
     expect(pipe.transform(1234567.89)).toBe("1'234.567,89");
   });
 
-  it('debe devolver vacío si el valor es undefined', () => {
+  it('should return empty if the value is undefined', () => {
     expect(pipe.transform(undefined)).toBe('');
   });
 
-  it('debe devolver vacío si el valor es null', () => {
+  it('should return empty if the value is null', () => {
     expect(pipe.transform(null as any)).toBe('');
   });
 
-  it('debe devolver vacío si el valor es NaN', () => {
+  it('should return empty if the value is NaN', () => {
     expect(pipe.transform(NaN)).toBe('');
   });
 
-  it('debe formatear un string numérico', () => {
+  it('should format a numeric string', () => {
     expect(pipe.transform(Number('1234567'))).toBe("1'234.567");
   });
 
-  it('debe formatear números pequeños', () => {
+  it('should format small numbers', () => {
     expect(pipe.transform(12)).toBe('12');
     expect(pipe.transform(123)).toBe('123');
     expect(pipe.transform(1234)).toBe('1.234');
