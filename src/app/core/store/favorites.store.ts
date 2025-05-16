@@ -3,7 +3,7 @@ import { Country } from '../models/country.model';
 
 @Injectable({ providedIn: 'root' })
 export class FavoritesStore {
-  
+
   private readonly _favorites = signal<Country[]>([]);
 
   readonly favorites = this._favorites.asReadonly();
@@ -13,24 +13,22 @@ export class FavoritesStore {
   readonly isFavorite = (code: string) => computed(() => this._favorites().some(c => c.cca3 === code));
 
   addFavorite(country: Country): void {
-    this._favorites.update(current => {
-      if (!current.some(c => c.cca3 === country.cca3)) {
-        return [...current, country];
-      }
-
-      return current;
-    });
+    if (!this.isFavorite(country.cca3)()) {
+      const updated = [...this._favorites(), country];
+      this._favorites.set(updated);
+    }
   }
 
   removeFavorite(code: string): void {
-    this._favorites.update(current =>  current.filter(c => c.cca3 !== code));
+    const updated = this._favorites().filter(c => c.cca3 !== code);
+    this._favorites.set(updated);
   }
 
   toggleFavorite(country: Country): void {
-    if (this.isFavorite(country.cca3)()) {
-      this.removeFavorite(country.cca3);
-    } else {
-      this.addFavorite(country);
-    }
+    const exists = this._favorites().some(c => c.cca3 === country.cca3);
+    const updated = exists
+      ? this._favorites().filter(c => c.cca3 !== country.cca3)
+      : [...this._favorites(), country];
+    this._favorites.set(updated);
   }
 }

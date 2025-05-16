@@ -16,6 +16,8 @@
              class="flag">
       </div>
 
+      <button (click)="toggleFavorite()" [class.favorited]="isFavorite()" >♥</button>
+
       <div class="details-grid">
         <div class="detail-item">
           <h3>Official Name</h3>

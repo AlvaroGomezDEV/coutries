@@ -40,7 +40,7 @@ export class CountryService {
     return this.http.get<Country[]>(`${this.apiUrl}/alpha/${code}`).pipe(
       map(response => response[0]),
       catchError(error => {
-        console.error('Error fetching country:', error);
+        console.error("Error fetching country: ", error);
         throw error;
       })
     );

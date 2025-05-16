@@ -2,7 +2,7 @@
   @if(isLoading() && countries().length === 0) {
     <p>cargando.......</p>
   } @else {
-    <cdk-virtual-scroll-viewport itemSize="300" class="country-viewport">
+    <cdk-virtual-scroll-viewport itemSize="300" #viewport class="country-viewport">
       <div class="grid-container">
         @for(country of countries(); track country.ccn3) {
           <div class="country-card">
@@ -12,11 +12,6 @@
             ></app-country-card>
           </div>
           }
-            <!-- (toggleFavorite)="onToggleFavorite($event)" -->
-          
-          <!-- <div *ngIf="loading()" class="loading-spinner">
-            <mat-spinner diameter="40"></mat-spinner>
-          </div> -->
       
           @if(isLoading() && countries().length > 0) {
             <div class="loading-more">Loading more countries...</div>

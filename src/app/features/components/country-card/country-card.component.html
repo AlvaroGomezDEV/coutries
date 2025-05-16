@@ -7,5 +7,7 @@
       <p>Capital: {{ country().capital?.[0] || 'N/A' }}</p>
       <p>Población: {{ country().population ?? 0 | number }}</p>
     </div>
+
+    <span [class.favorited]="isFavorite()" >♥</span>
   }
 </article>

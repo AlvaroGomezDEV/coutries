@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -8,18 +8,16 @@ export class ErrorInterceptor implements HttpInterceptor {
   private router = inject(Router);
 
   intercept(
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'An unknown error occurred!';
         
         if (error.error instanceof ErrorEvent) {
-          // Client-side error
           errorMessage = `Error: ${error.error.message}`;
         } else {
-          // Server-side error
           switch (error.status) {
             case 400:
               errorMessage = 'Bad Request';

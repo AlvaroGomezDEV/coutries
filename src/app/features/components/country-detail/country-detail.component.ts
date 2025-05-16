@@ -1,15 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CountryService } from '../../../core/services/country.service';
 import { Country } from '../../../core/models/country.model';
 import { catchError, of, switchMap } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
+import { FavoritesStore } from '../../../core/store/favorites.store';
 
 @Component({
   selector: 'app-country-detail',
   imports: [RouterLink, DecimalPipe],
   templateUrl: './country-detail.component.html',
   styleUrl: './country-detail.component.scss',
+  providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountryDetailComponent implements OnInit {
@@ -20,11 +22,17 @@ export class CountryDetailComponent implements OnInit {
 
   private countryService = inject(CountryService);
 
+  protected readonly favoritesStore = inject(FavoritesStore)
+
   protected country = signal<Country | null>(null);
 
   protected isLoading = signal(true);
 
   protected error = signal<string | null>(null);
+
+  protected isFavorite = computed(() => 
+    this.favoritesStore.isFavorite(this.country()?.cca3 || '')()
+  );
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -37,8 +45,8 @@ export class CountryDetailComponent implements OnInit {
         }
 
         return this.countryService.getCountryByCode(code).pipe(
-          catchError(() => {
-            console.log("Error al obtener el pais")
+          catchError((err) => {
+            console.log("Error getting country: ", err)
             return of(null)
           })
         )
@@ -65,5 +73,11 @@ export class CountryDetailComponent implements OnInit {
   getCurrencies(currencies: Record<string, { name: string }> | undefined): string {
     if (!currencies) return 'N/A';
     return Object.values(currencies).map(c => c.name).join(', ');
+  }
+
+  toggleFavorite() {
+    if (this.country()) {
+      this.favoritesStore.toggleFavorite(this.country()!);
+    }
   }
 }
