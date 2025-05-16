@@ -1,22 +1,44 @@
+@use '../../../theme/variables' as *;
+
 .country {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  align-items: flex-end;
+  background-position: center;
+  background-size: cover;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
-  margin-bottom: 16px;
+  min-height: 180px;
   overflow: hidden;
-  
-  img {
-    height: 80px;
-    object-fit: cover;
-    width: 120px;
-  }
-  
-  .content {
-    flex-grow: 1;
-    padding: 12px;
+  position: relative;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.02);
   }
 
-  .favorited {
-    color: red;
+  .overlay {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 0.9rem;
+    padding: 1rem;
+    width: 100%;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    p {
+      margin: 0.2rem 0;
+    }
+
+    .favorited {
+      color: $engineering-orange;
+      font-size: 1.5rem;
+      position: absolute;
+      right: 0.75rem;
+      top: 0.5rem;
+    }
   }
 }

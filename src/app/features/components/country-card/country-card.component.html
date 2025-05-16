@@ -1,15 +1,16 @@
-<article class="country">
-  @if(country()) {
-    <img [src]="country().flags.svg" [alt]="'Bandera del pais ' + country().name.common">
-
-    <div class="content">
-      <h3>{{ country().name.common }}</h3>
-      <p>Capital: {{ country().capital?.[0] || 'N/A' }}</p>
-      <p>Población: {{ country().population ?? 0 | number }}</p>
-    </div>
+<article
+  class="country"
+  [style.backgroundImage]="'url(' + country().flags.svg + ')'"
+  role="region"
+  [attr.aria-label]="country().name.common"
+>
+  <div class="overlay">
+    <h3>{{ country().name.common }}</h3>
+    <p>Capital: {{ country().capital?.[0] || 'N/A' }}</p>
+    <p>Población: {{ country().population ?? 0 | formatNumber }}</p>
 
     @if(isFavorite()) {
-      <span>♥</span>
+      <span class="favorited" aria-label="favorito">♥</span>
     }
-  }
+  </div>
 </article>
